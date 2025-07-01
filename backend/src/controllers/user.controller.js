@@ -4,6 +4,8 @@ import bcrypt, { hash } from "bcrypt"
 
 import crypto from "crypto"
 import { Meeting } from "../models/meeting.model.js";
+
+
 const login = async (req, res) => {
 
     const { username, password } = req.body;
@@ -39,7 +41,6 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
     const { name, username, password } = req.body;
-
 
     try {
         const existingUser = await User.findOne({ username });
