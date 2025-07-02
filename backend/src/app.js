@@ -22,7 +22,7 @@ app.use("/api/v1/users", userRoutes);
 
 const start = async () => {
   app.set("mongo_user");
-  mongoose.connect(process.env.MONGODB_URI, {
+    const connectionDb = await mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     ssl: true, // Ensure SSL is on
