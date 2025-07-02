@@ -13,8 +13,7 @@ const app = express();
 const server = createServer(app);
 const io = connectToSocket(server);
 
-
-app.set("port", (process.env.PORT || 8000))
+app.set("port", process.env.PORT || 8000);
 app.use(cors());
 app.use(express.json({ limit: "40kb" }));
 app.use(express.urlencoded({ limit: "40kb", extended: true }));
@@ -22,14 +21,20 @@ app.use(express.urlencoded({ limit: "40kb", extended: true }));
 app.use("/api/v1/users", userRoutes);
 
 const start = async () => {
-    app.set("mongo_user")
-    const connectionDb = await mongoose.connect(process.env.MONGODB_URI);
+  app.set("mongo_user");
+  mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    ssl: true, // Ensure SSL is on
+    tlsAllowInvalidCertificates: false,
+  });
 
-    console.log(`MONGO Connected DB HOst: ${connectionDb.connection.host}`)
-    server.listen(app.get("port"), () => {
-        console.log("LISTENIN ON PORT 8000")
-    });
+  mongoose.set("debug", true);
 
-}
+  console.log(`MONGO Connected DB HOst: ${connectionDb.connection.host}`);
+  server.listen(app.get("port"), () => {
+    console.log("LISTENIN ON PORT 8000");
+  });
+};
 
 start();
